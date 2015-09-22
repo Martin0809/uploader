@@ -1,0 +1,33 @@
+{
+  "name": "uploader",
+  "version": "0.0.1",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Martin0809/uploader.git"
+  },
+  "keywords": [
+    "uploader"
+  ],
+  "author": "Martin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Martin0809/uploader/issues"
+  },
+  "homepage": "https://github.com/Martin0809/uploader#readme",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "errorhandler": "^1.4.2",
+    "express": "^4.13.3",
+    "express-session": "^1.11.3",
+    "jade": "^1.11.0",
+    "method-override": "^2.3.5",
+    "morgan": "^1.6.1",
+    "multer": "^1.0.3",
+    "serve-favicon": "^2.3.0"
+  }
+}

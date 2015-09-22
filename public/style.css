@@ -1,0 +1,9 @@
+.img-box .img-item {position: relative; display: inline-block; margin-right: 10px; width: 60px; height: 45px; overflow: hidden;}
+		.img-box img {width: 60px; height: auto;}
+		.img-box .img-item-close {position: absolute; top: 0; right: 0; display: none; width: 12px; height: 12px; background-image: url("../images/web/iconsDeskV3.png"); background-position: -468px -1146px; cursor: pointer;}
+		.img-box .img-item:hover .img-item-close {display: block;}
+		.img-box .img-upload {position: relative; display: inline-block; width: 58px; height: 41px; border: 2px solid #ccc; cursor: pointer;}
+			.img-box .line {position: absolute; top: 50%; left: 50%; margin-top: -1px; margin-left: -10px; width: 20px; height: 2px; background-color: #ccc;}
+			.img-box .vertical-line {position: absolute; top: 50%; left: 50%; margin-top: -10px; margin-left: -1px; width: 2px; height: 20px; background-color: #ccc;}
+		.img-box .no-img {color: #707070;}
+.hide {display: none;}

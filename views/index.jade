@@ -1,0 +1,53 @@
+doctype
+html
+	head
+		meta(charset="utf-8")
+		title= title
+		link(href="/style.css", rel="stylesheet")
+		script(src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js")
+		script(src="/uploader.js")
+	body
+		.img-box
+			.img-upload
+				.line
+				.vertical-line
+			p 每张图片大小不超过5M，最多4张，支持JPG、PNG、GIF、BMP格式
+			input(type="file", name="img-upload" class="hide")
+		script.
+			$(function () {
+				// 上传图片
+				$(".img-upload").on("click", function() {
+					$(this).siblings("input[name=img-upload]").trigger("click");
+				});
+				$("input[name=img-upload]").on("change", function() {
+					$(this).uploader({
+						url: "/uploader",
+						success: function (res) {
+							if(res.status == 1) {
+								alert("上传成功");
+								$(this).parents(".img-box").find("p").text("每张图片大小不超过5M，最多4张，支持JPG、PNG、GIF、BMP格式").css("color", "");
+								var src = res.data.url;
+								addImage($(this), src, src);
+							} else {
+								$(this).parents(".img-box").find("p").text("上传失败，请重新尝试").css("color", "#ec3359");
+							}
+						},
+						error: function () {
+							alert(1)
+						}
+					});
+				});
+				// 删除图片
+				$("body").on("click", ".img-item-close", function() {
+					$(this).parents(".img-box").find(".img-upload").show();
+					$(this).parents(".img-item").remove();
+				});
+			});
+			// 添加图片缩略图
+			function addImage(obj, localSrc, src) {
+				var imgObj = $('<div class="img-item"><img src="' + localSrc + '"><em class="img-item-close"></em><input type="hidden" name="img-src" value="' + src + '"></div>');
+				$("input[name=img-upload]").parents(".img-box").find(".img-upload").before(imgObj);
+				if(obj.parents(".img-box").find(".img-item").length == 4) {
+					obj.parents(".img-box").find(".img-upload").hide();
+				}
+			}

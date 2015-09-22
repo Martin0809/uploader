@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+	<style>
+		.img-box .img-item {position: relative; display: inline-block; margin-right: 10px; width: 60px; height: 45px; overflow: hidden;}
+		.img-box img {width: 60px; height: auto;}
+		.img-box .img-item-close {position: absolute; top: 0; right: 0; display: none; width: 12px; height: 12px; background-image: url("../images/web/iconsDeskV3.png"); background-position: -468px -1146px; cursor: pointer;}
+		.img-box .img-item:hover .img-item-close {display: block;}
+		.img-box .img-upload {position: relative; display: inline-block; width: 58px; height: 41px; border: 2px solid #ccc; cursor: pointer;}
+			.img-box .line {position: absolute; top: 50%; left: 50%; margin-top: -1px; margin-left: -10px; width: 20px; height: 2px; background-color: #ccc;}
+			.img-box .vertical-line {position: absolute; top: 50%; left: 50%; margin-top: -10px; margin-left: -1px; width: 2px; height: 20px; background-color: #ccc;}
+		.img-box .no-img {color: #707070;}
+	</style>
+</head>
+<body>
+	<div class="img-box">
+		<div class="img-upload">
+			<div class="line"></div>
+			<div class="vertical-line"></div>
+		</div>
+		<p>每张图片大小不超过5M，最多4张，支持JPG、PNG、GIF、BMP格式</p>
+		<input type="file" name="img-upload" class="hide">
+	</div>
+	<script src="uploader.js"></script>
+	<script>
+		$(function () {
+			// 上传图片
+			$(".img-upload").on("click", function() {
+				$(this).siblings("input[name=img-upload]").trigger("click");
+			});
+			$("input[name=img-upload]").on("change", function() {
+				$(this).uploader({
+					ajax: {
+						error: function () {
+							alert(1)
+						}
+					}
+				});
+			});
+			// 删除图片
+			$("body").on("click", ".img-item-close", function() {
+				$(this).parents(".img-box").find(".img-upload").show();
+				$(this).parents(".img-item").remove();
+			});
+		});
+		// 上传图片
+		function imgUpload(obj) {
+			var fileList = obj[0].files;
+			if(!fileList[0]) return;
+			var localSrc = window.URL.createObjectURL(fileList[0]);
+			if(fileList[0].type.split("/")[0] == "image" && fileList[0].size > 5 * 1024 * 1024) {
+				obj.parents(".img-box").find("p").css("color", "#ec3359");
+			} else {
+				obj.parents(".img-box").find("p").css("color", "");
+			    /*var names="";       
+			        for(var name in fileList[0]){       
+			           names+=name+": "+fileList[0][name]+", ";  
+			        }  
+			        alert(names);
+			    var info = document.getElementById('info');
+			    var formdata = new FormData();
+			    info.innerHTML = "";
+			    $("#prew").attr("src", window.URL.createObjectURL(fileList[0])window.URL.createObjectURL(fileList[0]);)
+			    for( var i = 0 ; i < fileList.length ; i++ ){  
+			        info.innerHTML += fileList[i].name+"--"+window.URL.createObjectURL(fileList[i])+"<br>";
+			        formdata.append("FilesData["+i+"]", fileList[i].name);
+			    }*/
+			    var formdata = new FormData();
+			    formdata.append("filedata[0]", fileList[0]);
+			     $.ajax({
+			     	type: "POST",
+			     	// url: "http://i.yetang.com/upload",
+			     	url: "http://testapi.yetang.com/upload",
+			     	// dataType: "json",
+			     	data: formdata,
+			     	// data: formdata,
+			     	contentType: false,
+			     	processData: false,
+			     	success: function(re) {
+			     		if(re.status == 1) {
+			     			alert("上传成功");
+			     			obj.parents(".img-box").find("p").text("每张图片大小不超过5M，最多4张，支持JPG、PNG、GIF、BMP格式").css("color", "");
+			     			var src = re.data[0].url;
+			     			addImage(obj, localSrc, src);
+			     		} else {
+			     			obj.parents(".img-box").find("p").text("上传失败，请重新尝试").css("color", "#ec3359");
+			     		}
+			     	}
+			     });
+				/*var request = new XMLHttpRequest();
+				request.open("post", url);
+				request.send(fordata);*/
+				var src = "0";
+				addImage(obj, localSrc, src);
+			}
+		}
+
+		// 添加图片缩略图
+		function addImage(obj, localSrc, src) {
+			var imgObj = $('<div class="img-item"><img src="' + localSrc + '"><em class="img-item-close"></em><input type="hidden" name="img-src" value="' + src + '"></div>');
+			obj.parents(".img-box").find(".img-upload").before(imgObj);
+			if(obj.parents(".img-box").find(".img-item").length == 4) {
+				obj.parents(".img-box").find(".img-upload").hide();
+			}
+		}
+	</script>
+</body>
+</html>
